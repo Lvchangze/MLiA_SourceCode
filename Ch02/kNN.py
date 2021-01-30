@@ -1,3 +1,4 @@
+# coding=utf-8
 '''
 Created on Sep 16, 2010
 kNN: k Nearest Neighbors
@@ -31,7 +32,7 @@ def classify0(inX, dataSet, labels, k):
     return sortedClassCount[0][0]
 
 
-def createDataSet():
+def createDataSet():  # 创建数据集合标签
     group = array([[1.0, 1.1], [1.0, 1.0], [0, 0], [0, 0.1]])
     labels = ['A', 'A', 'B', 'B']
     return group, labels
