@@ -1,3 +1,4 @@
+# coding=utf-8
 '''
 Created on Oct 27, 2010
 
@@ -8,7 +9,7 @@ from Ch02 import kNN
 import matplotlib.pyplot as plt
 
 fig = plt.figure()
-ax = fig.add_subplot(111)
+ax = fig.add_subplot(111)  # 散点图
 datingDataMat, datingLabels = kNN.file2matrix('../datingTestSet2.txt')
 ax.scatter(datingDataMat[:, 1], datingDataMat[:, 2], 15.0 * array(datingLabels), 15.0 * array(datingLabels))
 ax.axis([-2, 25, -0.2, 2.0])
