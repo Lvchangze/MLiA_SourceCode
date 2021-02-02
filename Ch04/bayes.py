@@ -1,3 +1,4 @@
+# coding=utf-8
 '''
 Created on Oct 19, 2010
 
@@ -15,18 +16,18 @@ def loadDataSet():
         ['mr', 'licks', 'ate', 'my', 'steak', 'how', 'to', 'stop', 'him'],
         ['quit', 'buying', 'worthless', 'dog', 'food', 'stupid']
     ]
-    classVec = [0, 1, 0, 1, 0, 1]  # 1 is abusive, 0 not
+    classVec = [0, 1, 0, 1, 0, 1]  # 1 is 侮辱性文字, 0 not
     return postingList, classVec
 
 
-def createVocabList(dataSet):
+def createVocabList(dataSet):  # 构造词典
     vocabSet = set([])  # create empty set
     for document in dataSet:
         vocabSet = vocabSet | set(document)  # union of the two sets
     return list(vocabSet)
 
 
-def setOfWords2Vec(vocabList, inputSet):
+def setOfWords2Vec(vocabList, inputSet):  # 句子转化为向量
     returnVec = [0] * len(vocabList)
     for word in inputSet:
         if word in vocabList:
@@ -34,6 +35,12 @@ def setOfWords2Vec(vocabList, inputSet):
         else:
             print "the word: %s is not in my Vocabulary!" % word
     return returnVec
+
+
+listOPosts, listClasses = loadDataSet()
+myVocablist = createVocabList(listOPosts)
+print myVocablist
+print setOfWords2Vec(myVocablist, listOPosts[0])
 
 
 def trainNB0(trainMatrix, trainCategory):
