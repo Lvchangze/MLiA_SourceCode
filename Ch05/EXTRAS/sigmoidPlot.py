@@ -1,8 +1,9 @@
-'''
+# coding=utf-8
+"""
 Created on Oct 6, 2010
 
 @author: Peter
-'''
+"""
 import sys
 from pylab import *
 

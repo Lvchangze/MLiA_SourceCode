@@ -1,15 +1,16 @@
-'''
+# coding=utf-8
+"""
 Created on Oct 27, 2010
 Logistic Regression Working Module
 @author: Peter
-'''
+"""
 from numpy import *
 
 
 def loadDataSet():
-    dataMat = [];
+    dataMat = []
     labelMat = []
-    fr = open('testSet.txt')
+    fr = open('../testSet.txt')
     for line in fr.readlines():
         lineArr = line.strip().split()
         dataMat.append([1.0, float(lineArr[0]), float(lineArr[1])])
@@ -23,7 +24,7 @@ def sigmoid(inX):
 
 def gradAscent(dataMatIn, classLabels):
     dataMatrix = mat(dataMatIn)  # convert to NumPy matrix
-    labelMat = mat(classLabels).transpose()  # convert to NumPy matrix
+    labelMat = mat(classLabels).transpose()  # convert to NumPy matrix，转置矩阵
     m, n = shape(dataMatrix)
     alpha = 0.001
     maxCycles = 500
@@ -40,16 +41,16 @@ def plotBestFit(weights):
     dataMat, labelMat = loadDataSet()
     dataArr = array(dataMat)
     n = shape(dataArr)[0]
-    xcord1 = [];
+    xcord1 = []
     ycord1 = []
-    xcord2 = [];
+    xcord2 = []
     ycord2 = []
     for i in range(n):
         if int(labelMat[i]) == 1:
-            xcord1.append(dataArr[i, 1]);
+            xcord1.append(dataArr[i, 1])
             ycord1.append(dataArr[i, 2])
         else:
-            xcord2.append(dataArr[i, 1]);
+            xcord2.append(dataArr[i, 1])
             ycord2.append(dataArr[i, 2])
     fig = plt.figure()
     ax = fig.add_subplot(111)
@@ -58,8 +59,8 @@ def plotBestFit(weights):
     x = arange(-3.0, 3.0, 0.1)
     y = (-weights[0] - weights[1] * x) / weights[2]
     ax.plot(x, y)
-    plt.xlabel('X1');
-    plt.ylabel('X2');
+    plt.xlabel('X1')
+    plt.ylabel('X2')
     plt.show()
 
 
@@ -98,9 +99,9 @@ def classifyVector(inX, weights):
 
 
 def colicTest():
-    frTrain = open('horseColicTraining.txt');
+    frTrain = open('horseColicTraining.txt')
     frTest = open('horseColicTest.txt')
-    trainingSet = [];
+    trainingSet = []
     trainingLabels = []
     for line in frTrain.readlines():
         currLine = line.strip().split('\t')
@@ -110,7 +111,7 @@ def colicTest():
         trainingSet.append(lineArr)
         trainingLabels.append(float(currLine[21]))
     trainWeights = stocGradAscent1(array(trainingSet), trainingLabels, 1000)
-    errorCount = 0;
+    errorCount = 0
     numTestVec = 0.0
     for line in frTest.readlines():
         numTestVec += 1.0
@@ -126,7 +127,7 @@ def colicTest():
 
 
 def multiTest():
-    numTests = 10;
+    numTests = 10
     errorSum = 0.0
     for k in range(numTests):
         errorSum += colicTest()
