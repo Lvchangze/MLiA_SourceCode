@@ -62,7 +62,7 @@ def smoSimple(dataMatIn, classLabels, C, toler, maxIter):
                     print "L==H"
                     continue
                 eta = 2.0 * dataMatrix[i, :] * dataMatrix[j, :].T - dataMatrix[i, :] * dataMatrix[i, :].T \
-                      - dataMatrix[j,:] * dataMatrix[j, :].T
+                      - dataMatrix[j, :] * dataMatrix[j, :].T
                 if eta >= 0: print "eta>=0"; continue
                 alphas[j] -= labelMat[j] * (Ei - Ej) / eta
                 alphas[j] = clipAlpha(alphas[j], H, L)
@@ -318,9 +318,7 @@ def testDigits(kTup=('rbf', 10)):
     print "the test error rate is: %f" % (float(errorCount) / m)
 
 
-'''#######********************************
-Non-Kernel VErsions below
-'''  #######********************************
+# Non-Kernel Versions below
 
 
 class optStructK:
