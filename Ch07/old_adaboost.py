@@ -1,13 +1,13 @@
-'''
+"""
 Created on Nov 28, 2010
 Adaboost is short for Adaptive Boosting
 @author: Peter
-'''
+"""
 from numpy import *
 
 
 def loadDataSet(fileName):
-    dataMat = [];
+    dataMat = []
     labelMat = []
     fr = open(fileName)
     for line in fr.readlines():
@@ -27,16 +27,16 @@ def stumpClassify(dataMatrix, dimen, threshVal, threshIneq):  # just classify th
 
 
 def buildStump(dataArr, classLabels, D):
-    dataMatrix = mat(dataArr);
+    dataMatrix = mat(dataArr)
     labelMat = mat(classLabels).T
     m, n = shape(dataMatrix)
-    numSteps = 10.0;
-    bestStump = {};
+    numSteps = 10.0
+    bestStump = {}
     bestClasEst = mat(zeros((m, 1)))
     minError = inf  # init error sum, to +infinity
     for i in range(n):  # loop over all dimensions
-        rangeMin = dataMatrix[:, i].min();
-        rangeMax = dataMatrix[:, i].max();
+        rangeMin = dataMatrix[:, i].min()
+        rangeMax = dataMatrix[:, i].max()
         stepSize = (rangeMax - rangeMin) / numSteps
         for j in range(-1, int(numSteps) + 1):  # loop over all range in current dimension
             for inequal in ['lt', 'gt']:  # go over less than and greater than
@@ -83,5 +83,6 @@ def adaBoostTrain(dataArr, classLabels, numIt=40):
         # print aggErrors
         errorRate = aggErrors.sum() / m
         print errorRate
-        if errorRate == 0.0: break
+        if errorRate == 0.0:
+            break
     return weakClassArr
