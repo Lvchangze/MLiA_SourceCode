@@ -1,14 +1,14 @@
-'''
+"""
 Created on Jan 8, 2011
 
 @author: Peter
-'''
+"""
 from numpy import *
 
 
 def loadDataSet(fileName):  # general function to parse tab -delimited floats
     numFeat = len(open(fileName).readline().split('\t')) - 1  # get number of fields
-    dataMat = [];
+    dataMat = []
     labelMat = []
     fr = open(fileName)
     for line in fr.readlines():
@@ -22,7 +22,7 @@ def loadDataSet(fileName):  # general function to parse tab -delimited floats
 
 
 def standRegres(xArr, yArr):
-    xMat = mat(xArr);
+    xMat = mat(xArr)
     yMat = mat(yArr).T
     xTx = xMat.T * xMat
     if linalg.det(xTx) == 0.0:
@@ -33,7 +33,7 @@ def standRegres(xArr, yArr):
 
 
 def lwlr(testPoint, xArr, yArr, k=1.0):
-    xMat = mat(xArr);
+    xMat = mat(xArr)
     yMat = mat(yArr).T
     m = shape(xMat)[0]
     weights = mat(eye((m)))
@@ -80,7 +80,7 @@ def ridgeRegres(xMat, yMat, lam=0.2):
 
 
 def ridgeTest(xArr, yArr):
-    xMat = mat(xArr);
+    xMat = mat(xArr)
     yMat = mat(yArr).T
     yMean = mean(yMat, 0)
     yMat = yMat - yMean  # to eliminate X0 take mean off of Y
@@ -105,19 +105,19 @@ def regularize(xMat):  # regularize by columns
 
 
 def stageWise(xArr, yArr, eps=0.01, numIt=100):
-    xMat = mat(xArr);
+    xMat = mat(xArr)
     yMat = mat(yArr).T
     yMean = mean(yMat, 0)
     yMat = yMat - yMean  # can also regularize ys but will get smaller coef
     xMat = regularize(xMat)
     m, n = shape(xMat)
     returnMat = zeros((numIt, n))  # testing code remove
-    ws = zeros((n, 1));
-    wsTest = ws.copy();
+    ws = zeros((n, 1))
+    wsTest = ws.copy()
     wsMax = ws.copy()
     for i in range(numIt):  # could change this to while loop
         # print ws.T
-        lowestError = inf;
+        lowestError = inf
         for j in range(n):
             for sign in [-1, 1]:
                 wsTest = ws.copy()
@@ -134,7 +134,7 @@ def stageWise(xArr, yArr, eps=0.01, numIt=100):
 
 def scrapePage(inFile, outFile, yr, numPce, origPrc):
     from BeautifulSoup import BeautifulSoup
-    fr = open(inFile);
+    fr = open(inFile)
     fw = open(outFile, 'a')  # a is append mode writing
     soup = BeautifulSoup(fr.read())
     i = 1
