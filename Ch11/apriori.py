@@ -1,8 +1,8 @@
-'''
+"""
 Created on Mar 24, 2011
 Ch 11 code
 @author: Peter
-'''
+"""
 from numpy import *
 
 
@@ -47,9 +47,9 @@ def aprioriGen(Lk, k):  # creates Ck
     lenLk = len(Lk)
     for i in range(lenLk):
         for j in range(i + 1, lenLk):
-            L1 = list(Lk[i])[:k - 2];
+            L1 = list(Lk[i])[:k - 2]
             L2 = list(Lk[j])[:k - 2]
-            L1.sort();
+            L1.sort()
             L2.sort()
             if L1 == L2:  # if first k-2 elements are equal
                 retList.append(Lk[i] | Lk[j])  # set union
@@ -62,7 +62,7 @@ def apriori(dataSet, minSupport=0.5):
     L1, supportData = scanD(D, C1, minSupport)
     L = [L1]
     k = 2
-    while (len(L[k - 2]) > 0):
+    while len(L[k - 2]) > 0:
         Ck = aprioriGen(L[k - 2], k)
         Lk, supK = scanD(D, Ck, minSupport)  # scan DB to get Lk
         supportData.update(supK)
@@ -76,7 +76,7 @@ def generateRules(L, supportData, minConf=0.7):  # supportData is a dict coming 
     for i in range(1, len(L)):  # only get the sets with two or more items
         for freqSet in L[i]:
             H1 = [frozenset([item]) for item in freqSet]
-            if (i > 1):
+            if i > 1:
                 rulesFromConseq(freqSet, H1, supportData, bigRuleList, minConf)
             else:
                 calcConf(freqSet, H1, supportData, bigRuleList, minConf)
@@ -96,10 +96,10 @@ def calcConf(freqSet, H, supportData, brl, minConf=0.7):
 
 def rulesFromConseq(freqSet, H, supportData, brl, minConf=0.7):
     m = len(H[0])
-    if (len(freqSet) > (m + 1)):  # try further merging
+    if len(freqSet) > (m + 1):  # try further merging
         Hmp1 = aprioriGen(H, m + 1)  # create Hm+1 new candidates
         Hmp1 = calcConf(freqSet, Hmp1, supportData, brl, minConf)
-        if (len(Hmp1) > 1):  # need at least two sets to merge
+        if len(Hmp1) > 1:  # need at least two sets to merge
             rulesFromConseq(freqSet, Hmp1, supportData, brl, minConf)
 
 
@@ -122,7 +122,7 @@ votesmart.apikey = 'a7fa40adec6f4a77178799fae4441030'
 
 # votesmart.apikey = 'get your api key first'
 def getActionIds():
-    actionIdList = [];
+    actionIdList = []
     billTitleList = []
     fr = open('recent20bills.txt')
     for line in fr.readlines():
