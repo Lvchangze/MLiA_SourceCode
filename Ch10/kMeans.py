@@ -1,8 +1,8 @@
-'''
+"""
 Created on Feb 16, 2011
 k Means Clustering for Ch10 of Machine Learning in Action
 @author: Peter Harrington
-'''
+"""
 from numpy import *
 
 
@@ -39,12 +39,12 @@ def kMeans(dataSet, k, distMeas=distEclud, createCent=randCent):
     while clusterChanged:
         clusterChanged = False
         for i in range(m):  # for each data point assign it to the closest centroid
-            minDist = inf;
+            minDist = inf
             minIndex = -1
             for j in range(k):
                 distJI = distMeas(centroids[j, :], dataSet[i, :])
                 if distJI < minDist:
-                    minDist = distJI;
+                    minDist = distJI
                     minIndex = j
             if clusterAssment[i, 0] != minIndex: clusterChanged = True
             clusterAssment[i, :] = minIndex, minDist ** 2
@@ -62,7 +62,7 @@ def biKmeans(dataSet, k, distMeas=distEclud):
     centList = [centroid0]  # create a list with one centroid
     for j in range(m):  # calc initial Error
         clusterAssment[j, 1] = distMeas(mat(centroid0), dataSet[j, :]) ** 2
-    while (len(centList) < k):
+    while len(centList) < k:
         lowestSSE = inf
         for i in range(len(centList)):
             ptsInCurrCluster = dataSet[nonzero(clusterAssment[:, 0].A == i)[0],
@@ -144,7 +144,7 @@ def clusterClubs(numClust=5):
     myCentroids, clustAssing = biKmeans(datMat, numClust, distMeas=distSLC)
     fig = plt.figure()
     rect = [0.1, 0.1, 0.8, 0.8]
-    scatterMarkers = ['s', 'o', '^', '8', 'p', \
+    scatterMarkers = ['s', 'o', '^', '8', 'p',
                       'd', 'v', 'h', '>', '<']
     axprops = dict(xticks=[], yticks=[])
     ax0 = fig.add_axes(rect, label='ax0', **axprops)

@@ -1,8 +1,8 @@
-'''
+"""
 Created on Feb 4, 2011
 Tree-Based Regression Methods
 @author: Peter Harrington
-'''
+"""
 from numpy import *
 
 
@@ -32,9 +32,9 @@ def regErr(dataSet):
 
 def linearSolve(dataSet):  # helper function used in two places
     m, n = shape(dataSet)
-    X = mat(ones((m, n)));
-    Y = mat(ones((m, 1)))  # create a copy of data with 1 in 0th postion
-    X[:, 1:n] = dataSet[:, 0:n - 1];
+    X = mat(ones((m, n)))
+    Y = mat(ones((m, 1)))  # create a copy of data with 1 in 0th position
+    X[:, 1:n] = dataSet[:, 0:n - 1]
     Y = dataSet[:, -1]  # and strip out Y
     xTx = X.T * X
     if linalg.det(xTx) == 0.0:
@@ -56,7 +56,7 @@ def modelErr(dataSet):
 
 
 def chooseBestSplit(dataSet, leafType=regLeaf, errType=regErr, ops=(1, 4)):
-    tolS = ops[0];
+    tolS = ops[0]
     tolN = ops[1]
     # if all the target variables are the same value: quit and return value
     if len(set(dataSet[:, -1].T.tolist()[0])) == 1:  # exit cond 1
@@ -64,13 +64,14 @@ def chooseBestSplit(dataSet, leafType=regLeaf, errType=regErr, ops=(1, 4)):
     m, n = shape(dataSet)
     # the choice of the best feature is driven by Reduction in RSS error from mean
     S = errType(dataSet)
-    bestS = inf;
-    bestIndex = 0;
+    bestS = inf
+    bestIndex = 0
     bestValue = 0
     for featIndex in range(n - 1):
         for splitVal in set(dataSet[:, featIndex]):
             mat0, mat1 = binSplitDataSet(dataSet, featIndex, splitVal)
-            if (shape(mat0)[0] < tolN) or (shape(mat1)[0] < tolN): continue
+            if (shape(mat0)[0] < tolN) or (shape(mat1)[0] < tolN):
+                continue
             newS = errType(mat0) + errType(mat1)
             if newS < bestS:
                 bestIndex = featIndex
@@ -89,10 +90,9 @@ def chooseBestSplit(dataSet, leafType=regLeaf, errType=regErr, ops=(1, 4)):
 def createTree(dataSet, leafType=regLeaf, errType=regErr,
                ops=(1, 4)):  # assume dataSet is NumPy Mat so we can array filtering
     feat, val = chooseBestSplit(dataSet, leafType, errType, ops)  # choose the best split
-    if feat == None: return val  # if the splitting hit a stop condition return val
-    retTree = {}
-    retTree['spInd'] = feat
-    retTree['spVal'] = val
+    if feat is None:
+        return val  # if the splitting hit a stop condition return val
+    retTree = {'spInd': feat, 'spVal': val}
     lSet, rSet = binSplitDataSet(dataSet, feat, val)
     retTree['left'] = createTree(lSet, leafType, errType, ops)
     retTree['right'] = createTree(rSet, leafType, errType, ops)
@@ -100,7 +100,7 @@ def createTree(dataSet, leafType=regLeaf, errType=regErr,
 
 
 def isTree(obj):
-    return (type(obj).__name__ == 'dict')
+    return type(obj).__name__ == 'dict'
 
 
 def getMean(tree):
@@ -110,8 +110,9 @@ def getMean(tree):
 
 
 def prune(tree, testData):
-    if shape(testData)[0] == 0: return getMean(tree)  # if we have no test data collapse the tree
-    if (isTree(tree['right']) or isTree(tree['left'])):  # if the branches are not trees try to prune them
+    if shape(testData)[0] == 0:
+        return getMean(tree)  # if we have no test data collapse the tree
+    if isTree(tree['right']) or isTree(tree['left']):  # if the branches are not trees try to prune them
         lSet, rSet = binSplitDataSet(testData, tree['spInd'], tree['spVal'])
     if isTree(tree['left']): tree['left'] = prune(tree['left'], lSet)
     if isTree(tree['right']): tree['right'] = prune(tree['right'], rSet)
@@ -143,7 +144,8 @@ def modelTreeEval(model, inDat):
 
 
 def treeForeCast(tree, inData, modelEval=regTreeEval):
-    if not isTree(tree): return modelEval(tree, inData)
+    if not isTree(tree):
+        return modelEval(tree, inData)
     if inData[tree['spInd']] > tree['spVal']:
         if isTree(tree['left']):
             return treeForeCast(tree['left'], inData, modelEval)
