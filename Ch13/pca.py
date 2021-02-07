@@ -1,8 +1,8 @@
-'''
+"""
 Created on Jun 1, 2011
 
 @author: Peter Harrington
-'''
+"""
 from numpy import *
 
 
@@ -27,7 +27,7 @@ def pca(dataMat, topNfeat=9999999):
 
 
 def replaceNanWithMean():
-    datMat = loadDataSet('secom.data', ' ')
+    datMat = loadDataSet('../secom.data', ' ')
     numFeat = shape(datMat)[1]
     for i in range(numFeat):
         meanVal = mean(datMat[nonzero(~isnan(datMat[:, i].A))[0], i])  # values that are not NaN (a number)

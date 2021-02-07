@@ -1,8 +1,8 @@
-'''
+"""
 Created on Mar 8, 2011
 
 @author: Peter
-'''
+"""
 from numpy import *
 from numpy import linalg as la
 
@@ -48,18 +48,16 @@ def cosSim(inA, inB):
 
 def standEst(dataMat, user, simMeas, item):
     n = shape(dataMat)[1]
-    simTotal = 0.0;
+    simTotal = 0.0
     ratSimTotal = 0.0
     for j in range(n):
         userRating = dataMat[user, j]
         if userRating == 0: continue
-        overLap = nonzero(logical_and(dataMat[:, item].A > 0, \
-                                      dataMat[:, j].A > 0))[0]
+        overLap = nonzero(logical_and(dataMat[:, item].A > 0, dataMat[:, j].A > 0))[0]
         if len(overLap) == 0:
             similarity = 0
         else:
-            similarity = simMeas(dataMat[overLap, item], \
-                                 dataMat[overLap, j])
+            similarity = simMeas(dataMat[overLap, item], dataMat[overLap, j])
         print 'the %d and %d similarity is: %f' % (item, j, similarity)
         simTotal += similarity
         ratSimTotal += similarity * userRating
@@ -71,7 +69,7 @@ def standEst(dataMat, user, simMeas, item):
 
 def svdEst(dataMat, user, simMeas, item):
     n = shape(dataMat)[1]
-    simTotal = 0.0;
+    simTotal = 0.0
     ratSimTotal = 0.0
     U, Sigma, VT = la.svd(dataMat)
     Sig4 = mat(eye(4) * Sigma[:4])  # arrange Sig4 into a diagonal matrix
@@ -79,8 +77,7 @@ def svdEst(dataMat, user, simMeas, item):
     for j in range(n):
         userRating = dataMat[user, j]
         if userRating == 0 or j == item: continue
-        similarity = simMeas(xformedItems[item, :].T, \
-                             xformedItems[j, :].T)
+        similarity = simMeas(xformedItems[item, :].T, xformedItems[j, :].T)
         print 'the %d and %d similarity is: %f' % (item, j, similarity)
         simTotal += similarity
         ratSimTotal += similarity * userRating
@@ -92,7 +89,8 @@ def svdEst(dataMat, user, simMeas, item):
 
 def recommend(dataMat, user, N=3, simMeas=cosSim, estMethod=standEst):
     unratedItems = nonzero(dataMat[user, :].A == 0)[1]  # find unrated items
-    if len(unratedItems) == 0: return 'you rated everything'
+    if len(unratedItems) == 0:
+        return 'you rated everything'
     itemScores = []
     for item in unratedItems:
         estimatedScore = estMethod(dataMat, user, simMeas, item)

@@ -1,15 +1,15 @@
-'''
+"""
 Created on Jun 14, 2011
 FP-Growth FP means frequent pattern
-the FP-Growth algorithm needs: 
+the FP-Growth algorithm needs:
 1. FP-tree (class treeNode)
 2. header table (use dict)
 
-This finds frequent itemsets similar to apriori but does not 
-find association rules.  
+This finds frequent itemsets similar to apriori but does not
+find association rules.
 
 @author: Peter
-'''
+"""
 
 
 class treeNode:
@@ -32,7 +32,7 @@ class treeNode:
 def createTree(dataSet, minSup=1):  # create FP-tree from dataset but don't mine
     headerTable = {}
     # go over dataSet twice
-    for trans in dataSet:  # first pass counts frequency of occurance
+    for trans in dataSet:  # first pass counts frequency of occurrence
         for item in trans:
             headerTable[item] = headerTable.get(item, 0) + dataSet[trans]
     for k in headerTable.keys():  # remove items not meeting minSup
@@ -58,10 +58,10 @@ def createTree(dataSet, minSup=1):  # create FP-tree from dataset but don't mine
 
 def updateTree(items, inTree, headerTable, count):
     if items[0] in inTree.children:  # check if orderedItems[0] in retTree.children
-        inTree.children[items[0]].inc(count)  # incrament count
+        inTree.children[items[0]].inc(count)  # increment count
     else:  # add items[0] to inTree.children
         inTree.children[items[0]] = treeNode(items[0], count, inTree)
-        if headerTable[items[0]][1] == None:  # update header table
+        if headerTable[items[0]][1] is None:  # update header table
             headerTable[items[0]][1] = inTree.children[items[0]]
         else:
             updateHeader(headerTable[items[0]][1], inTree.children[items[0]])
@@ -70,20 +70,20 @@ def updateTree(items, inTree, headerTable, count):
 
 
 def updateHeader(nodeToTest, targetNode):  # this version does not use recursion
-    while (nodeToTest.nodeLink != None):  # Do not use recursion to traverse a linked list!
+    while nodeToTest.nodeLink != None:  # Do not use recursion to traverse a linked list!
         nodeToTest = nodeToTest.nodeLink
     nodeToTest.nodeLink = targetNode
 
 
 def ascendTree(leafNode, prefixPath):  # ascends from leaf node to root
-    if leafNode.parent != None:
+    if leafNode.parent is not None:
         prefixPath.append(leafNode.name)
         ascendTree(leafNode.parent, prefixPath)
 
 
 def findPrefixPath(basePat, treeNode):  # treeNode comes from header table
     condPats = {}
-    while treeNode != None:
+    while treeNode is not None:
         prefixPath = []
         ascendTree(treeNode, prefixPath)
         if len(prefixPath) > 1:
@@ -104,7 +104,7 @@ def mineTree(inTree, headerTable, minSup, preFix, freqItemList):
         # 2. construct cond FP-tree from cond. pattern base
         myCondTree, myHead = createTree(condPattBases, minSup)
         # print 'head from conditional tree: ', myHead
-        if myHead != None:  # 3. mine cond. FP-tree
+        if myHead is not None:  # 3. mine cond. FP-tree
             # print 'conditional tree for: ',newFreqSet
             # myCondTree.disp(1)
             mineTree(myCondTree, myHead, minSup, newFreqSet, freqItemList)
